@@ -1,0 +1,88 @@
+// this is the first approach i tried, a brute force method
+// TC O(n^2)
+// this code passes all test cases as the constraints of the problem are pretty low
+
+// class Solution {
+// public:
+    
+//     int solve(vector<int>& nums,int skip_ind)
+//     {
+//         int length=0;
+//         int maxi=0;
+//         for(int i=0;i<nums.size();i++)
+//         {
+//             if(i==skip_ind)
+//             {
+//                 continue;
+//             }
+//             if(nums[i]==1)
+//             {
+//                 length++;
+//                 maxi = max(length,maxi);
+//             }
+//             if(nums[i]==0)
+//             {
+//                 length=0;
+//             }
+//         }
+//         return maxi;
+//     }
+//     int longestSubarray(vector<int>& nums) {
+//         // int n = nums.size();
+//         int ans;
+//         int count=0;
+//         int ones=0;
+//         for(int i=0;i<nums.size();i++)
+//         {
+//             if(nums[i]==1)
+//             {
+//                 ones++;
+//                 continue;
+//             }
+//             if(nums[i]==0)
+//             {
+//                 count++;
+//                 int temp=solve(nums,i);
+//                 ans = max(temp,ans);
+//             }
+//         }
+//         if(count==0)
+//         {
+//             return nums.size()-1;
+//         }
+//         if(ones==0)
+//         {
+//             return 0;
+//         }
+//         return ans;
+//     }
+// };
+
+
+
+// now let's use sliding window approach 
+// TC O(n)
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+
+        int zeroCount = 0;
+        int longestWindow = 0;
+
+        int i = 0;
+        
+        for (int j = 0; j < nums.size(); j++) {
+            zeroCount += (nums[j] == 0);
+                          
+            // Shrink the window until the zero counts come under the limit.
+            while (zeroCount > 1) {
+                zeroCount -= (nums[i] == 0);
+                i++;
+            }
+              
+            longestWindow = max(longestWindow, j - i);
+        }
+
+        return longestWindow;
+    }
+};
